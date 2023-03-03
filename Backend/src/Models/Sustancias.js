@@ -6,7 +6,7 @@ const SustanciaSchema = new Schema({
     ST: { type: String, require: true},
     RVP: { type: Number, require: true },
     Mv: { type: Number, require: true },
-    Ml: number,
+    Ml: {type: number},
     S: { type: Number, require: true },
     A: { type: Number, require: true },
     B: { type: Number, require: true }
