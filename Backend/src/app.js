@@ -18,5 +18,6 @@ app.use(express.json());
 //Routes
 app.use('/areas', require('./routes/CTanks.routes'));
 app.use('/login', require('./routes/users.routes'));
+app.use('/prueba', require('./routes/Perdidas.routes'));
 
 module.exports = app;

@@ -12,7 +12,10 @@ const CTankSchema = new Schema({
     gnx: Number,
     gnn:Number,
     TC: { type: Boolean, require: true },
-    Hs: { type: Number, require: true },
+    Hs: { type: Number, require: true }, 
+    PR: { type: Boolean, require: true},
+    alfa: { type: Number },
+    Hro: {type: Number}
 });
 
-module.exports = model( 'CTanks', CTankSchema );
+module.exports = model( 'ctanks', CTankSchema );
