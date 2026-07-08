@@ -1,0 +1,43 @@
+version: '3.8'
+
+
+services:
+  mysqldb:
+    image: mysql
+    container_name: mysqldb
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "4500:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_USER_PASSWORD
+    volumes:
+      - 'mysql-data:/var/lib/mysql'
+      - './mysql-init-files:/docker-entrypoint-initdb.d'
+    networks:
+      - losses-network
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - 8090:80
+    environment:
+      -PMA_HOST: 'mysqldb'
+      -MYSQL_ROOT_PASSWORD: '1234339827'
+    networks:
+      - losses-network
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  losses-network:
+    name: losses_network
+  
+        

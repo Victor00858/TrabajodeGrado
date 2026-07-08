@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const measurements_controller_1 = require("../controllers/measurements.controller");
+const measurementsController = new measurements_controller_1.MeasurementsController();
+const routerMeasurements = (0, express_1.Router)();
+routerMeasurements.post('/save-measurements-per-hour', measurementsController.postMeasurementsPerMinute);
+routerMeasurements.post('/save-lt-measurements', measurementsController.postLtMeasurement);
+routerMeasurements.post('/save-tla-measurements', measurementsController.postTlaMeasurement);
+routerMeasurements.post('/save-pva-measurements', measurementsController.postPvaMeasurement);
+routerMeasurements.post('/save-taa-measurements', measurementsController.postTaaMeasurement);
+routerMeasurements.post('/save-hl-measurements', measurementsController.postHlMeasurement);
+routerMeasurements.post('/save-tb-measurements', measurementsController.postTbMeasurement);
+exports.default = routerMeasurements;

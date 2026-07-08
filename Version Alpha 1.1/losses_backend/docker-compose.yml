@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+
+  auth_service:
+    image: 'auth-service'
+    container_name: losses_auth_service
+    build:
+      context: './services/auth-service/'
+      dockerfile: Dockerfile
+    env_file:
+     - ./.env
+    ports:
+      - '$AUTH_SERVICE_PORT:$AUTH_SERVICE_PORT'
+    volumes:
+      - './services/auth-service:/app/'
+    restart: always
+    networks:
+      - losses-network
+
+  reports_service:
+    image: 'reports-service'
+    container_name: losses_reports_service
+    depends_on:
+      - preprocesing_service
+    build:
+      context: './services/reports-service/'
+      dockerfile: Dockerfile
+    env_file:
+     - ./.env
+    ports:
+      - '$REPORTS_SERVICE_PORT:$REPORTS_SERVICE_PORT'
+    volumes:
+      - './services/reports-service:/app/'
+    restart: always
+    networks:
+      - losses-network
+
+  data-service:
+    image: 'data-service'
+    container_name: 'losses_data_service'
+    build:
+     context: './services/data-service/'
+     dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - '$DATA_SERVICE_PORT:$DATA_SERVICE_PORT'
+    volumes:
+      - './services/data-service:/app/'
+    restart:  always
+    networks:
+      - losses-network
+
+  tensorflow-jupyter:
+    image: tensorflow/tensorflow:latest-gpu-jupyter
+    container_name: 'tensorflow_jupyter'
+    env_file:
+      - ./.env
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./services/preprocesing-service/notebooks:/tf/
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    restart: always
+    networks:
+      - losses-network
+
+  preprocesing_service:
+    image: preprocesing_service
+    container_name: 'preprocesing_service'
+    build:
+      context: './services/preprocesing-service/'
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    volumes:
+      - ./services/preprocesing-service:/app/
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    restart: always
+    networks:
+      - losses-network
+
+networks:
+  losses-network:
+    external:
+      name: losses_network
